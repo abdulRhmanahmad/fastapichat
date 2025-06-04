@@ -1,5 +1,3 @@
- 
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import openai
@@ -18,7 +16,7 @@ class MessageResponse(BaseModel):
 @app.post("/chat", response_model=MessageResponse)
 async def chat(request: MessageRequest):
     try:
-        client = openai.OpenAI(api_key=openai.api_key)  # كائن جديد حسب النسخة الجديدة
+        client = openai.OpenAI(api_key=openai.api_key)
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -29,4 +27,3 @@ async def chat(request: MessageRequest):
         return MessageResponse(response=reply)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
