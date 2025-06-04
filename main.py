@@ -23,6 +23,7 @@ async def root():
 async def health_check():
     return {"status": "healthy", "service": "FastAPI Chat API"}
 
+# Chat endpoint
 @app.post("/chat", response_model=MessageResponse)
 async def chat(request: MessageRequest):
     try:
