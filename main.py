@@ -19,9 +19,7 @@ async def chat(request: MessageRequest):
         client = openai.OpenAI(api_key=openai.api_key)
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": "user", "content": request.message}
-            ]
+            messages=[{"role": "user", "content": request.message}]
         )
         reply = completion.choices[0].message.content
         return MessageResponse(response=reply)
