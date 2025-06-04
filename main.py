@@ -13,10 +13,15 @@ class MessageRequest(BaseModel):
 class MessageResponse(BaseModel):
     response: str
 
-# ← هون ضيف الـ root endpoint الجديد
+# Root endpoint
 @app.get("/")
 async def root():
     return {"message": "FastAPI Chat API is running! Use POST /chat to send messages."}
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "FastAPI Chat API"}
 
 @app.post("/chat", response_model=MessageResponse)
 async def chat(request: MessageRequest):
