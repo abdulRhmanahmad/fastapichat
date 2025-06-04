@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import openai
+import openai # type: ignore
 import os
 
 app = FastAPI()
@@ -13,13 +13,20 @@ class MessageRequest(BaseModel):
 class MessageResponse(BaseModel):
     response: str
 
+# ← هون ضيف الـ root endpoint الجديد
+@app.get("/")
+async def root():
+    return {"message": "FastAPI Chat API is running! Use POST /chat to send messages."}
+
 @app.post("/chat", response_model=MessageResponse)
 async def chat(request: MessageRequest):
     try:
-        client = openai.OpenAI(api_key=openai.api_key)
+        client = openai.OpenAI(api_key=openai.api_key)   
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": request.message}]
+            messages=[
+                {"role": "user", "content": request.message}
+            ]
         )
         reply = completion.choices[0].message.content
         return MessageResponse(response=reply)
